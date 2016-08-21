@@ -12,3 +12,6 @@ Example of command that will turn burners 1 and 2 for 500[ms]: 500, 1, 2
 
 Separate repository contains the code for the Arduino controller:
 https://github.com/leybzon/FireTowerArduino
+
+You can install this application from the Google Playstore:
+https://play.google.com/store/apps/details?id=com.stream11.puffer
