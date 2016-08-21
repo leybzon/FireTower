@@ -38,6 +38,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.Toast;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -295,11 +296,17 @@ public class MainActivity extends ActionBarActivity {
 
                 sendCommandToTower("Hello!");
 
+                Toast toast = Toast.makeText(getApplicationContext(), R.string.connected, Toast.LENGTH_SHORT);
+                toast.show();
+
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnected = false;
                 updateConnectionState(R.string.disconnected);
                 invalidateOptionsMenu();
                 //clearUI();
+                Toast toast = Toast.makeText(getApplicationContext(), R.string.disconnected, Toast.LENGTH_SHORT);
+                toast.show();
+                
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 // Show all the supported services and characteristics on the user interface.
                 displayGattServices(mBluetoothLeService.getSupportedGattServices());
