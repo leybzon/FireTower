@@ -89,4 +89,5 @@
     <string name="default_address">A4:D5:78:0E:0A:4F</string>
     <string name="debug_mode">Debug</string>
     <string name="normal_mode">Normal</string>
+    <string name="menu_clear">Clear</string>
 </resources>

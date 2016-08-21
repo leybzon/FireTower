@@ -254,6 +254,21 @@ public class MainActivity extends ActionBarActivity {
             llNormal.setVisibility(View.VISIBLE);
             return true;
         }
+        if (id == R.id.action_clear) {
+            if (mIsDebug) {
+                mEditDebugCommand.setText("");
+            } else {
+                for (int rowId = 0; rowId< mNumberOfTimeEvents; rowId++) {
+                    for (int lineId = 0; lineId < mNumberOfLines; lineId++) {
+                        int idFire = rowId * mNumberOfLines + lineId;
+                        Fire fire = (Fire) findViewById(idFire);
+                        fire.setOn(false);
+                    }
+                }
+            }
+            return true;
+        }
+
 
         return super.onOptionsItemSelected(item);
     }
