@@ -50,25 +50,28 @@ public class SettingsActivity extends AppCompatActivity {
         mInitFreq = settings.getInt(SPEED, 120);
 
         mSpeedBar = (SeekBar) findViewById(R.id.speedBar);
-        mSpeedBar.setMax(360);
+        mSpeedBar.setMax(600);
         mSpeedBar.setProgress(mInitFreq);
 
         mSpeedBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-            int fr = mInitFreq;
+            int frequencyRate = mInitFreq;
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
-                fr = progresValue;
+                frequencyRate = progresValue;
+                if (frequencyRate<=0) {
+                    frequencyRate=1;
+                }
 
-                mSpeedIndicator.setText(fr + " (steps per minute)");
+                mSpeedIndicator.setText(frequencyRate + " (steps per minute)");
             }
             public void onStartTrackingTouch(SeekBar seekBar) {
             }
 
             public void onStopTrackingTouch(SeekBar seekBar) {
-                Log.v(this.toString(), String.valueOf(fr));
+                Log.v(this.toString(), String.valueOf(frequencyRate));
                 SharedPreferences.Editor editor = settings.edit();
-                editor.putInt(SPEED, fr);
+                editor.putInt(SPEED, frequencyRate);
                 editor.commit();
             }
         });
