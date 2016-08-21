@@ -45,5 +45,34 @@
             android:paddingLeft="1dp"
             android:paddingRight="1dp"></LinearLayout>
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:visibility="gone"
+            android:id="@+id/layoutDebug">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextDebugCommand"
+                android:layout_weight="1"
+                android:text="@string/default_debug_command" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SEND"
+                android:id="@+id/bnDebugSendCommand"
+                android:layout_centerVertical="true"
+                android:layout_alignEnd="@+id/verticalLayout"
+                android:layout_marginEnd="34dp" />
+        </LinearLayout>
+
     </RelativeLayout>
+
 </ScrollView>

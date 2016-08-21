@@ -36,6 +36,9 @@ import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.Toast;
@@ -80,6 +83,9 @@ public class MainActivity extends ActionBarActivity {
     private BluetoothGattCharacteristic bluetoothGattCharacteristicHM_10;
     private final String LIST_NAME = "NAME";
     private final String LIST_UUID = "UUID";
+    private Boolean mIsDebug = false;
+    private EditText mEditDebugCommand;
+    private Button mButtonSendDebugCommand;
 
 
     @Override
@@ -113,6 +119,17 @@ public class MainActivity extends ActionBarActivity {
 
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+
+        mEditDebugCommand   = (EditText)findViewById(R.id.editTextDebugCommand);
+        mButtonSendDebugCommand = (Button) findViewById(R.id.bnDebugSendCommand);
+        mButtonSendDebugCommand.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                final String cmd = mEditDebugCommand.getText().toString();
+                Log.d(TAG, "Debug sending command: " + cmd);
+
+                sendCommandToTower(cmd);
+            }
+        });
 
     }
 
@@ -221,8 +238,36 @@ public class MainActivity extends ActionBarActivity {
 
             return true;
         }
+        if (id == R.id.action_debug) {
+            mIsDebug=true;
+            LinearLayout llDebug = (LinearLayout) findViewById(R.id.layoutDebug);
+            llDebug.setVisibility(View.VISIBLE);
+            LinearLayout llNormal = (LinearLayout) findViewById(R.id.verticalLayout);
+            llNormal.setVisibility(View.GONE);
+            return true;
+        }
+        if (id == R.id.action_normal) {
+            mIsDebug=false;
+            LinearLayout llDebug = (LinearLayout) findViewById(R.id.layoutDebug);
+            llDebug.setVisibility(View.GONE);
+            LinearLayout llNormal = (LinearLayout) findViewById(R.id.verticalLayout);
+            llNormal.setVisibility(View.VISIBLE);
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if(mIsDebug) {
+            menu.findItem(R.id.action_debug).setVisible(false);
+            menu.findItem(R.id.action_normal).setVisible(true);
+        } else {
+            menu.findItem(R.id.action_debug).setVisible(true);
+            menu.findItem(R.id.action_normal).setVisible(false);
+        }
+        return true;
     }
 
     @Override
@@ -306,7 +351,7 @@ public class MainActivity extends ActionBarActivity {
                 //clearUI();
                 Toast toast = Toast.makeText(getApplicationContext(), R.string.disconnected, Toast.LENGTH_SHORT);
                 toast.show();
-                
+
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 // Show all the supported services and characteristics on the user interface.
                 displayGattServices(mBluetoothLeService.getSupportedGattServices());
