@@ -268,6 +268,10 @@ public class MainActivity extends ActionBarActivity {
             }
             return true;
         }
+        if (id == R.id.action_about) {
+            Intent intentAbout = new Intent(this, AboutActivity.class);
+            startActivity(intentAbout);
+        }
 
 
         return super.onOptionsItemSelected(item);

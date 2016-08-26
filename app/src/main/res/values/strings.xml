@@ -64,7 +64,6 @@
     <string name="pref_title_vibrate">Vibrate</string>
 
 
-
     <string name="ble_not_supported">BLE is not supported</string>
     <string name="label_data">Data:</string>
     <string name="label_device_address">Device address:</string>
@@ -90,4 +89,9 @@
     <string name="debug_mode">Debug</string>
     <string name="normal_mode">Normal</string>
     <string name="menu_clear">Clear</string>
+    <string name="menu_about">About</string>
+
+    <!-- About box -->
+    <string name="leybzon">Created By: Gene Leybzon\n http://www.leybzon.com</string>
+    <string name="github">Source Code: https://github.com/leybzon/FireTower</string>
 </resources>

@@ -9,4 +9,53 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.stream11.puffer.AboutActivity">
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:src="@drawable/atom_cult_2016"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/app_name"
+        android:id="@+id/textView2"
+        android:height="@dimen/abc_text_size_display_3_material"
+        android:textSize="@dimen/abc_action_button_min_height_material"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Fire Up Your Imagination"
+        android:id="@+id/textView3"
+        android:layout_below="@+id/textView2"
+        android:layout_alignEnd="@+id/textView2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Find the tower at the Burning Man Festival \n at &quot;C 6:45&quot; and take control of the fire"
+        android:id="@+id/textView7"
+        android:layout_above="@+id/textLeybzon"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/leybzon"
+        android:id="@+id/textLeybzon"
+        android:autoLink="web"
+        android:clickable="true"
+        android:textIsSelectable="false"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp" />
 </RelativeLayout>
