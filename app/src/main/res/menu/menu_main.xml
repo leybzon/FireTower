@@ -8,7 +8,11 @@
     <item android:id="@+id/action_debug" android:title="@string/debug_mode"
         android:orderInCategory="300" app:showAsAction="never" />
     <item android:id="@+id/action_normal" android:title="@string/normal_mode"
-        android:orderInCategory="300" app:showAsAction="never" />
+        android:orderInCategory="400" app:showAsAction="never" />
+    <item android:id="@+id/action_save" android:title="@string/menu_save"
+        android:orderInCategory="500" app:showAsAction="never" />
+    <item android:id="@+id/action_load" android:title="@string/menu_load"
+        android:orderInCategory="600" app:showAsAction="never" />
     <item android:id="@+id/action_about" android:title="@string/menu_about"
         android:orderInCategory="1000" app:showAsAction="never" />
 </menu>

@@ -17,11 +17,13 @@ package com.stream11.puffer;
  */
 
 import android.animation.ValueAnimator;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
@@ -43,6 +45,8 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,9 +76,7 @@ public class MainActivity extends ActionBarActivity {
     private SharedPreferences.OnSharedPreferenceChangeListener mSharedPreferenceChangeListener;
     private final int MS_IN_MIN = 60000;
 
-
-    //private String mDeviceName;
-    private String mDeviceAddress =  "A4:D5:78:0E:0A:4F";//new String(R.string.default_address); //"A4:D5:78:0E:0A:4F";
+    private String mDeviceAddress =  "A4:D5:78:0E:0A:4F";
     private BluetoothLeService mBluetoothLeService;
     private ArrayList<ArrayList<BluetoothGattCharacteristic>> mGattCharacteristics =
             new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
@@ -268,6 +270,11 @@ public class MainActivity extends ActionBarActivity {
             }
             return true;
         }
+        if (id == R.id.action_save) {
+            savePattern();
+        }
+        if (id == R.id.action_load) {
+        }
         if (id == R.id.action_about) {
             Intent intentAbout = new Intent(this, AboutActivity.class);
             startActivity(intentAbout);
@@ -451,16 +458,58 @@ public class MainActivity extends ActionBarActivity {
 
 
     private void updateConnectionState(final int resourceId) {
-     /*   runOnUiThread(new Runnable() {
-
-            @Override
-            public void run() {
-                mConnectionState.setText(resourceId);
-            }
-        });
-*/  //TODO!
-
         Log.v(TAG + " connection starte", getResources().getString(resourceId));
+    }
+
+
+    private void savePatternToFile(final String fileName) {
+        Log.v(TAG, "Will save the pattern to \"" + fileName + "\"");
+        try {
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(openFileOutput(fileName + ".csv", Context.MODE_PRIVATE));
+
+            for (int rowId = 0; rowId< mNumberOfTimeEvents; rowId++) {
+                for (int lineId = 0; lineId < mNumberOfLines; lineId++) {
+                    int idFire = rowId * mNumberOfLines + lineId;
+                    Fire fire = (Fire) findViewById(idFire);
+                    if (fire!=null) {
+                        if (fire.isOn()) {
+                            outputStreamWriter.write("1");
+                        } else  {
+                            outputStreamWriter.write("0");
+                        }
+                        if (lineId < mNumberOfTimeEvents-1) {
+                            outputStreamWriter.write(",");
+                        }
+                    }
+                }
+                outputStreamWriter.write("\n");
+            }
+
+            outputStreamWriter.close();
+        }
+        catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+    }
+
+    private void savePattern() {
+        final EditText txtFileName = new EditText(this);
+
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.save_dialog_title)
+                .setMessage(R.string.save_dialog_prompt)
+                .setView(txtFileName)
+                .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        String fileName = txtFileName.getText().toString();
+                        savePatternToFile(fileName);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                    }
+                })
+                .show();
     }
 
 

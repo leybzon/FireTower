@@ -89,9 +89,15 @@
     <string name="debug_mode">Debug</string>
     <string name="normal_mode">Normal</string>
     <string name="menu_clear">Clear</string>
+    <string name="menu_save">Save</string>
+    <string name="menu_load">Load</string>
     <string name="menu_about">About</string>
 
     <!-- About box -->
     <string name="leybzon">Created By: Gene Leybzon\n http://www.leybzon.com</string>
     <string name="github">Source Code: https://github.com/leybzon/FireTower</string>
+
+    <!-- File save dialog -->
+    <string name="save_dialog_title">Save Patten</string>
+    <string name="save_dialog_prompt">File Name</string>
 </resources>
