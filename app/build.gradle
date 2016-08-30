@@ -8,8 +8,8 @@ android {
         applicationId "com.stream11.puffer"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.1"
+        versionCode 3
+        versionName "1.3"
     }
     buildTypes {
         release {

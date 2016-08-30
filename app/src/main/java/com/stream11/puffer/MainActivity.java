@@ -39,12 +39,17 @@ import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
@@ -260,13 +265,7 @@ public class MainActivity extends ActionBarActivity {
             if (mIsDebug) {
                 mEditDebugCommand.setText("");
             } else {
-                for (int rowId = 0; rowId< mNumberOfTimeEvents; rowId++) {
-                    for (int lineId = 0; lineId < mNumberOfLines; lineId++) {
-                        int idFire = rowId * mNumberOfLines + lineId;
-                        Fire fire = (Fire) findViewById(idFire);
-                        fire.setOn(false);
-                    }
-                }
+                ceasefire();
             }
             return true;
         }
@@ -274,12 +273,13 @@ public class MainActivity extends ActionBarActivity {
             savePattern();
         }
         if (id == R.id.action_load) {
+            ceasefire();
+            createFileSelectorDialog();
         }
         if (id == R.id.action_about) {
             Intent intentAbout = new Intent(this, AboutActivity.class);
             startActivity(intentAbout);
         }
-
 
         return super.onOptionsItemSelected(item);
     }
@@ -301,8 +301,7 @@ public class MainActivity extends ActionBarActivity {
         updateSettings();
     }
 
-    //-----------------------------
-// Code to manage Service lifecycle.
+
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
         @Override
@@ -462,10 +461,108 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
+    private void ceasefire() {
+        for (int rowId = 0; rowId < mNumberOfTimeEvents; rowId++) {
+            for (int lineId = 0; lineId < mNumberOfLines; lineId++) {
+                int idFire = rowId * mNumberOfLines + lineId;
+                Fire fire = (Fire) findViewById(idFire);
+                fire.setOn(false);
+            }
+        }
+    }
+    public static boolean isNumeric(String str) {
+        for (char c : str.toCharArray()) {
+            if (!Character.isDigit(c)) return false;
+        }
+        return true;
+    }
+
+    private void readPatternFromFile(final String fileName) {
+        Log.v(TAG, "Will read pattern from \"" + fileName + "\"");
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(fileName));
+            String line;
+
+            int iInputRow = 0;
+            while ((line = br.readLine()) != null) {
+                Log.v(TAG, "read: " + line);
+                String[] rowData = line.split(",");
+                for (int i=0; i<rowData.length; i++) {
+                    if (i<mNumberOfLines && isNumeric(rowData[i])) {
+                        double state = Double.parseDouble(rowData[i]);
+
+                        if (state>0) {
+                            int idFire = iInputRow * mNumberOfLines + i;
+                            Fire fire = (Fire) findViewById(idFire);
+                            fire.setOn(true);
+                            Log.v(TAG, "Will set on: " + String.valueOf(idFire));
+                        }
+                    }
+                }
+                iInputRow++;
+            }
+            br.close();
+        }
+        catch (IOException e) {
+            Log.e("Exception", "File read failed: " + e.toString());
+        }
+    }
+
+
+    private String[] getFileList() {
+        File filePath = getFilesDir();
+        FilenameFilter filter = new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String filename) {
+                File sel = new File(dir, filename);
+                return filename.contains(".csv");
+            }
+        };
+
+        String[] fileList = filePath.list(filter);
+        if (fileList==null) {
+            fileList = new String[0];
+        }
+        return fileList;
+    }
+
+    protected void createFileSelectorDialog() {
+        AlertDialog.Builder builderSingle = new AlertDialog.Builder(MainActivity.this);
+        builderSingle.setIcon(R.drawable.ic_launcher);
+        builderSingle.setTitle("Select One Name:-");
+
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                MainActivity.this,
+                android.R.layout.select_dialog_singlechoice);
+        arrayAdapter.addAll(getFileList());
+
+        builderSingle.setNegativeButton(
+                "cancel",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        builderSingle.setAdapter(
+                arrayAdapter,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String fileName =  getFilesDir() + File.separator + arrayAdapter.getItem(which);
+                        Log.v(TAG, "Will load data from" + fileName);
+                        readPatternFromFile(fileName);
+                    }
+                });
+        builderSingle.show();
+
+    }
+
     private void savePatternToFile(final String fileName) {
         Log.v(TAG, "Will save the pattern to \"" + fileName + "\"");
-        try {
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(openFileOutput(fileName + ".csv", Context.MODE_PRIVATE));
+        try {OutputStreamWriter outputStreamWriter = new OutputStreamWriter(openFileOutput(fileName + ".csv", Context.MODE_PRIVATE));
 
             for (int rowId = 0; rowId< mNumberOfTimeEvents; rowId++) {
                 for (int lineId = 0; lineId < mNumberOfLines; lineId++) {
