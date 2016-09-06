@@ -70,17 +70,6 @@ public class Fire extends ImageView {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-/*
-        int x = getWidth();
-        int y = getHeight();
-        int radius = Math.min(x, y) / 2;
-
-        if (isOn()) {
-            canvas.drawCircle(x / 2, y / 2, radius, mPaintOn);
-        } else {
-            canvas.drawCircle(x / 2, y / 2, radius, mPaintOff);
-        }
-        */
     }
 
     public boolean isOn() {

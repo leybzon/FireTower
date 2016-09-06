@@ -46,21 +46,6 @@ public class TimeLineView extends ImageView {
         mTextPaint.setTextSize(30f);
     }
 
-    /*
-    @Override
-
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        //Get the width measurement
-        int widthSize = View.resolveSize(getDesiredWidth(), widthMeasureSpec);
-
-        //Get the height measurement
-        int heightSize = View.resolveSize(getDesiredHeight(), heightMeasureSpec);
-
-        //MUST call this to store the measurements
-        setMeasuredDimension(widthSize, heightSize);
-    }
-    */
-
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {

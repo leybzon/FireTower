@@ -16,7 +16,6 @@ package com.stream11.puffer;
  *       limitations under the License.
  */
 
-import android.animation.ValueAnimator;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
@@ -29,7 +28,6 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -69,10 +67,6 @@ public class MainActivity extends ActionBarActivity {
 
     int mControlSize = 20;
 
-    protected Matrix mMatrix = new Matrix();
-    protected ValueAnimator mAnimator;
-    protected TimeLineView mTimeLineView;
-
     protected ArrayList<LinearLayout> mRows = new ArrayList<LinearLayout>();
     protected TimerTask mTimer;
     protected int mHighligtedRow = 0;
@@ -86,7 +80,6 @@ public class MainActivity extends ActionBarActivity {
     private ArrayList<ArrayList<BluetoothGattCharacteristic>> mGattCharacteristics =
             new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
     private boolean mConnected = false;
-    private BluetoothGattCharacteristic mNotifyCharacteristic;
     private BluetoothGattCharacteristic bluetoothGattCharacteristicHM_10;
     private final String LIST_NAME = "NAME";
     private final String LIST_UUID = "UUID";
@@ -99,12 +92,6 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //Fire testFire = new Fire(this);
-        //testFire.setMinimumWidth(10);
-        //testFire.setMinimumHeight(10);
-        //testFire.setImageResource(R.drawable.ic_launcher);
-
 
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -624,9 +611,6 @@ public class MainActivity extends ActionBarActivity {
     protected void onPause() {
         super.onPause();
         unregisterReceiver(mGattUpdateReceiver);
-        //if (mTimer != null) {
-        //    mTimer.cancel();
-        //}
     }
 
     @Override
