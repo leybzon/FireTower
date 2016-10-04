@@ -15,3 +15,5 @@ https://github.com/leybzon/FireTowerArduino
 
 You can install this application from the Google Playstore:
 https://play.google.com/store/apps/details?id=com.stream11.puffer
+
+![Completed project](https://github.com/leybzon/FireTower/blob/master/videotogif_2016.10.04_15.01.57.gif "Completed Project")
